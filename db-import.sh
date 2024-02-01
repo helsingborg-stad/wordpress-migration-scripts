@@ -62,6 +62,7 @@ import_site_database() {
     # Run the wp db import command for the current site
     color_echo green "  Importing $IMPORT_FILE to site $BLOG_ID"
     wp db import "$IMPORT_FILE"
+    wp cache flush
     
     # Check if the import was successful
     if [ $? -eq 0 ]; then
@@ -75,6 +76,7 @@ import_site_database() {
     SEARCH_REPLACE_CMD="wp search-replace '$FROM_DOMAIN' '$TO_DOMAIN' ${PREFIX}_* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
     color_echo yellow "  Performing domain replacement: $SEARCH_REPLACE_CMD"
     $SEARCH_REPLACE_CMD
+    wp cache flush
 
     # Check if the search-replace operation was successful
     if [ $? -eq 0 ]; then
