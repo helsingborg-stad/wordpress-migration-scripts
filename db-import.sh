@@ -37,11 +37,11 @@ import_site_database() {
         exit 1
     fi
 
-    #Add blog id to prefix. 
+    # Add blog id to prefix.
     if [ "$BLOG_ID" -eq 1 ]; then
-        PREFIX = ${BASE_PREFIX}
+        PREFIX=${BASE_PREFIX}
     else
-        PREFIX = ${BASE_PREFIX}${BLOG_ID}
+        PREFIX=${BASE_PREFIX}${BLOG_ID}
     fi
 
     # Define the import file path for each database
