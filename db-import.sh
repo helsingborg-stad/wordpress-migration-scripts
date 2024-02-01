@@ -11,7 +11,7 @@ IMPORT_FOLDER="/var/db"
 STAGE_WP_PATH="/var/www/stage"
 
 # Set the prefix variable
-PREFIX="hbg_"
+BASE_PREFIX="hbg_"
 
 # Function to display colored messages
 color_echo() {
@@ -37,8 +37,15 @@ import_site_database() {
         exit 1
     fi
 
+    #Add blog id to prefix. 
+    if [ "$BLOG_ID" -eq 1 ]; then
+        PREFIX = ${BASE_PREFIX}
+    else
+        PREFIX = ${BASE_PREFIX}${BLOG_ID}
+    fi
+
     # Define the import file path for each database
-    IMPORT_FILE="$IMPORT_FOLDER/${PREFIX}${BLOG_ID}.sql"
+    IMPORT_FILE="$IMPORT_FOLDER/${PREFIX}.sql"
 
     # Check if the import file exists
     if [ ! -f "$IMPORT_FILE" ]; then
@@ -65,7 +72,7 @@ import_site_database() {
     fi
 
     # Perform domain replacement using search-replace CLI
-    SEARCH_REPLACE_CMD="wp search-replace '$FROM_DOMAIN' '$TO_DOMAIN' --network --skip-columns=guid --all-tables-with-prefix=${PREFIX}${BLOG_ID}_"
+    SEARCH_REPLACE_CMD="wp search-replace '$FROM_DOMAIN' '$TO_DOMAIN' ${PREFIX}_ ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
     color_echo yellow "  Performing domain replacement: $SEARCH_REPLACE_CMD"
     $SEARCH_REPLACE_CMD
 
