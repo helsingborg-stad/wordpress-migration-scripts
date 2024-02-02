@@ -60,7 +60,7 @@ import_site_database() {
         exit 1
     fi
 
-    SEARCH_REPLACE_CMD="wp search-replace '$FROM_DOMAIN' '$TO_DOMAIN' ${PREFIX}_* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
+    SEARCH_REPLACE_CMD="wp search-replace $FROM_DOMAIN $TO_DOMAIN ${PREFIX}_* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
     color_echo yellow "  Performing domain replacement: $SEARCH_REPLACE_CMD"
     $SEARCH_REPLACE_CMD
 
