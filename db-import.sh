@@ -16,9 +16,9 @@ BASE_PREFIX="hbg_"
 # Function to display colored messages
 color_echo() {
     case $1 in
-        red)    echo -e "\e[91m$2\e[0m";;
-        green)  echo -e "\e[92m$2\e[0m";;
-        yellow) echo -e "\e[93m$2\e[0m";;
+        red)    echo "\e[91m$2\e[0m";;
+        green)  echo "\e[92m$2\e[0m";;
+        yellow) echo "\e[93m$2\e[0m";;
         *)      echo $2;;
     esac
 }
@@ -62,29 +62,32 @@ import_site_database() {
     # Run the wp db import command for the current site
     color_echo green "  Importing $IMPORT_FILE to site $BLOG_ID"
     wp db import "$IMPORT_FILE"
-    wp cache flush
     
     # Check if the import was successful
     if [ $? -eq 0 ]; then
-        color_echo green "  Success: Imported database for site $BLOG_ID"
+        color_echo green "Success: Imported database for site $BLOG_ID"
     else
-        color_echo red "  Error: Failed to import database for site $BLOG_ID"
+        color_echo red "Error: Failed to import database for site $BLOG_ID"
         exit 1
     fi
+
+    #Empty cache
+    wp cache flush
 
     # Perform domain replacement using search-replace CLI
     SEARCH_REPLACE_CMD="wp search-replace '$FROM_DOMAIN' '$TO_DOMAIN' ${PREFIX}_* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
     color_echo yellow "  Performing domain replacement: $SEARCH_REPLACE_CMD"
     $SEARCH_REPLACE_CMD
-    wp cache flush
 
     # Check if the search-replace operation was successful
     if [ $? -eq 0 ]; then
-        color_echo green "  Success: Domain replacement completed for site $BLOG_ID"
+        color_echo green "Success: Domain replacement completed for site $BLOG_ID"
     else
-        color_echo red "  Error: Failed to perform domain replacement for site $BLOG_ID"
+        color_echo red "Error: Failed to perform domain replacement for site $BLOG_ID"
         exit 1
     fi
+    #Empty cache
+    wp cache flush
 }
 
 # Check if the required parameter blog_id is provided
