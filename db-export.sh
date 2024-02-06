@@ -48,7 +48,7 @@ echo "$SITES" | while IFS=, read -r BLOG_ID URL LAST_UPDATED REGISTERED; do
 
     # Get a list of tables matching the current site prefix
     if [ "$BLOG_ID" -eq 1 ]; then
-        TABLES=$(wp db tables --format=csv)
+        TABLES=$(wp db tables --format=csv --scope=blog)
     else
         TABLES=$(wp db tables "${PREFIX_WITH_BLOG_ID}*" --format=csv --all-tables)
     fi
