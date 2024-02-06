@@ -61,7 +61,7 @@ import_site_database() {
     fi
 
     if [ "$BLOG_ID" -eq 1 ]; then
-        SEARCH_REPLACE_CMD="wp search-replace $FROM_DOMAIN $TO_DOMAIN ${PREFIX}* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
+        SEARCH_REPLACE_CMD="wp search-replace $FROM_DOMAIN $TO_DOMAIN ${PREFIX}* --network --skip-columns=guid --all-tables"
     else
         SEARCH_REPLACE_CMD="wp search-replace $FROM_DOMAIN $TO_DOMAIN ${PREFIX}_* ${BASE_PREFIX}blogs --network --skip-columns=guid --all-tables"
     fi
