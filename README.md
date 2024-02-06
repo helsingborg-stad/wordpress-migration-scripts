@@ -33,6 +33,11 @@ In other scenarios, achieving the same results can be accomplished by mapping th
    - Set the WordPress installation path in the staging environment (`STAGE_WP_PATH`).
    - Run the script with the `blog_id` parameter to import and update domain references for the specified site.
 
+There are two consecutive optional parameters from replace from and replace to arguments. Example query:
+```bash
+sh db-import.sh 3 visithelsingborg.com visithelsingborg.hbg
+```
+
 3. **update.sh**:
    - Run the script to fetch the latest versions of the migration scripts from the repository.
 
