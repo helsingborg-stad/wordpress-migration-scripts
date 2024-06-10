@@ -13,7 +13,7 @@ PREFIX="hbg_"
 cd "$WP_PATH" || exit
 
 # Get a list of all sites in the network
-SITES=$(wp site list --format=csv | tail -n +2)
+SITES=$(wp site list --format=csv --allow-root | tail -n +2)
 
 # Function to display colored messages
 color_echo() {
@@ -48,9 +48,9 @@ echo "$SITES" | while IFS=, read -r BLOG_ID URL LAST_UPDATED REGISTERED; do
 
     # Get a list of tables matching the current site prefix
     if [ "$BLOG_ID" -eq 1 ]; then
-        TABLES=$(wp db tables --format=csv --scope=blog)
+        TABLES=$(wp db tables --format=csv --scope=blog --allow-root)
     else
-        TABLES=$(wp db tables "${PREFIX_WITH_BLOG_ID}*" --format=csv --all-tables)
+        TABLES=$(wp db tables "${PREFIX_WITH_BLOG_ID}*" --format=csv --all-tables --allow-root)
     fi
 
     # Check if any tables are found
@@ -59,7 +59,7 @@ echo "$SITES" | while IFS=, read -r BLOG_ID URL LAST_UPDATED REGISTERED; do
         EXPORT_FILE="$EXPORT_FOLDER/$PREFIX_WITH_BLOG_ID.sql"
 
         # Run the wp db export command for the current site prefix
-        EXPORT_FILE_TMP="$WP_PATH/$(wp db export --tables="$TABLES" --porcelain)"
+        EXPORT_FILE_TMP="$WP_PATH/$(wp db export --tables="$TABLES" --porcelain --allow-root)"
 
         #Move
         color_echo green "  Moving $EXPORT_FILE_TMP to $EXPORT_FILE"
